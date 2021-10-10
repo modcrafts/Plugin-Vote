@@ -8,6 +8,7 @@ use Azuriom\Plugin\Vote\Models\Reward;
 use Azuriom\Plugin\Vote\Models\Site;
 use Azuriom\Plugin\Vote\Models\Vote;
 use Azuriom\Plugin\Vote\Verification\VoteChecker;
+use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -48,15 +49,7 @@ class VoteController extends Controller
         $nextVoteTime = $site->getNextVoteTime($user, $request);
 
         if ($nextVoteTime !== null) {
-            $formattedTime = $nextVoteTime->diffForHumans([
-                'parts' => 2,
-                'join' => true,
-                'syntax' => CarbonInterface::DIFF_ABSOLUTE,
-            ]);
-
-            return response()->json([
-                'message' => trans('vote::messages.vote-delay', ['time' => $formattedTime]),
-            ], 422);
+            return $this->formatTimeMessage($nextVoteTime);
         }
 
         if ($site->rewards->isEmpty()) {
@@ -77,15 +70,7 @@ class VoteController extends Controller
         $nextVoteTime = $site->getNextVoteTime($user, $request);
 
         if ($nextVoteTime !== null) {
-            $formattedTime = $nextVoteTime->diffForHumans([
-                'parts' => 2,
-                'join' => true,
-                'syntax' => CarbonInterface::DIFF_ABSOLUTE,
-            ]);
-
-            return response()->json([
-                'message' => trans('vote::messages.vote-delay', ['time' => $formattedTime]),
-            ], 422);
+            return $this->formatTimeMessage($nextVoteTime);
         }
 
         if ($site->rewards->isEmpty()) {
@@ -100,6 +85,13 @@ class VoteController extends Controller
             return response()->json([
                 'status' => 'pending',
             ]);
+        }
+
+        // Check again because sometimes API can be really slow...
+        $nextVoteTime = $site->getNextVoteTime($user, $request);
+
+        if ($nextVoteTime !== null) {
+            return $this->formatTimeMessage($nextVoteTime);
         }
 
         $next = now()->addMinutes($site->vote_delay);
@@ -117,5 +109,18 @@ class VoteController extends Controller
         }
 
         return response()->json(['message' => trans('vote::messages.vote-success')]);
+    }
+
+    private function formatTimeMessage(Carbon $nextVoteTime)
+    {
+        $time = $nextVoteTime->diffForHumans([
+            'parts' => 2,
+            'join' => true,
+            'syntax' => CarbonInterface::DIFF_ABSOLUTE,
+        ]);
+
+        return response()->json([
+            'message' => trans('vote::messages.vote-delay', ['time' => $time]),
+        ], 422);
     }
 }

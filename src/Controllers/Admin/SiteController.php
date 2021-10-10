@@ -46,9 +46,7 @@ class SiteController extends Controller
     {
         $site = Site::create($request->validated());
 
-        $rewards = array_keys($request->input('rewards', []));
-
-        $site->rewards()->sync($rewards);
+        $site->rewards()->sync($request->input('rewards', []));
 
         return redirect()->route('vote.admin.sites.index')
             ->with('success', trans('vote::admin.sites.status.created'));
@@ -134,9 +132,7 @@ class SiteController extends Controller
     {
         $site->update($request->validated());
 
-        $rewards = array_keys($request->input('rewards', []));
-
-        $site->rewards()->sync($rewards);
+        $site->rewards()->sync($request->input('rewards', []));
 
         return redirect()->route('vote.admin.sites.index')
             ->with('success', trans('vote::admin.sites.status.updated'));

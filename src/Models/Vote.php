@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\DB;
  * @property bool $is_enabled
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- *
  * @property \Azuriom\Models\User $user
  * @property \Azuriom\Plugin\Vote\Models\Site|null $site
  * @property \Azuriom\Plugin\Vote\Models\Reward|null $reward

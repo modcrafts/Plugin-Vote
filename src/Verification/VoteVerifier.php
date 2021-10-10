@@ -131,7 +131,7 @@ class VoteVerifier
     public function verifyByValue(string $value)
     {
         $this->verificationMethod = function (Response $response) use ($value) {
-            return $response->body() == $value;
+            return $response->body() === $value;
         };
 
         return $this;
@@ -140,7 +140,7 @@ class VoteVerifier
     public function verifyByDifferentValue(string $value)
     {
         $this->verificationMethod = function (Response $response) use ($value) {
-            return $response->body() != $value;
+            return $response->body() !== $value;
         };
 
         return $this;

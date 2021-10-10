@@ -60,7 +60,7 @@
         <div class="card-body">
             @forelse($rewards as $reward)
                 <div class="form-group custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="rewards{{ $reward->id }}" name="rewards[{{ $reward->id }}]" @if(isset($site) && $site->rewards->contains($reward)) checked @endif>
+                    <input type="checkbox" class="custom-control-input" id="rewards{{ $reward->id }}" name="rewards[]" value="{{ $reward->id }}" @if(isset($site) && $site->rewards->contains($reward)) checked @endif>
                     <label class="custom-control-label" for="rewards{{ $reward->id }}">{{ $reward->name }}</label>
                 </div>
             @empty
