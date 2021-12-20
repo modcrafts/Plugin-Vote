@@ -38,6 +38,8 @@ return [
 
         'list' => 'Sites on which votes can be verified',
 
+        'variable' => 'You can use <code>{player}</code> to use the player name.',
+
         'verifications' => [
             'enable' => 'Enable votes verification',
 
