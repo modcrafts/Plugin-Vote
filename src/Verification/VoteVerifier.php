@@ -3,7 +3,6 @@
 namespace Azuriom\Plugin\Vote\Verification;
 
 use Azuriom\Models\User;
-use Closure;
 use Exception;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
@@ -122,7 +121,7 @@ class VoteVerifier
                 return false;
             }
 
-            return $value == ($exceptedValue instanceof Closure ? $exceptedValue($value, $json) : $exceptedValue);
+            return $value == value($exceptedValue, $value, $json);
         };
 
         return $this;

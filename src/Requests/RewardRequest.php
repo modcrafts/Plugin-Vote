@@ -30,7 +30,7 @@ class RewardRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:50'],
             'server_id' => ['required', Rule::exists('servers', 'id')],
-            'chances' => ['required', 'integer', 'between:1,100'],
+            'chances' => ['required', 'numeric', 'between:1,100'],
             'money' => ['nullable', 'numeric', 'min:0'],
             'need_online' => ['filled', 'boolean'],
             'commands' => ['sometimes', 'nullable', 'array'],

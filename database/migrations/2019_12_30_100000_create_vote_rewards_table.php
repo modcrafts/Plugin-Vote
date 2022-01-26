@@ -17,7 +17,7 @@ class CreateVoteRewardsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->unsignedInteger('server_id');
-            $table->unsignedInteger('chances');
+            $table->unsignedDecimal('chances');
             $table->unsignedDecimal('money')->default(0);
             $table->text('commands')->nullable();
             $table->boolean('need_online')->default(false);
