@@ -31,6 +31,7 @@ class SiteRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:50'],
             'url' => ['required', 'string', 'url', 'max:150'],
+            'rewards' => ['required', 'array'],
             'verification_key' => ['nullable', 'max:100'],
             'vote_delay' => ['required', 'integer', 'min:0'],
             'has_verification' => ['filled', 'boolean'],
@@ -59,11 +60,13 @@ class SiteRequest extends FormRequest
     /**
      * Get the validated data from the request.
      *
+     * @param  mixed|null  $key
+     * @param  mixed|null  $default
      * @return array
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function validated()
+    public function validated($key = null, $default = null)
     {
         $validated = $this->validator->validated();
         $url = Arr::get($validated, 'url');

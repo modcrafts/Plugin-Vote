@@ -11,7 +11,6 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">{{ trans('messages.fields.name') }}</th>
-                        <th scope="col">{{ trans('vote::messages.fields.server') }}</th>
                         <th scope="col">{{ trans('vote::messages.fields.chances') }}</th>
                         <th scope="col">{{ trans('messages.fields.enabled') }}</th>
                         <th scope="col">{{ trans('messages.fields.action') }}</th>
@@ -23,16 +22,15 @@
                         <tr>
                             <th scope="row">{{ $reward->id }}</th>
                             <td>{{ $reward->name }}</td>
-                            <td>{{ $reward->server->name ?? '?' }}</td>
                             <td>{{ $reward->chances }} %</td>
                             <td>
-                                <span class="badge badge-{{ $reward->is_enabled ? 'success' : 'danger' }}">
+                                <span class="badge bg-{{ $reward->is_enabled ? 'success' : 'danger' }}">
                                     {{ trans_bool($reward->is_enabled) }}
                                 </span>
                             </td>
                             <td>
-                                <a href="{{ route('vote.admin.rewards.edit', $reward) }}" class="mx-1" title="{{ trans('messages.actions.edit') }}" data-toggle="tooltip"><i class="fas fa-edit"></i></a>
-                                <a href="{{ route('vote.admin.rewards.destroy', $reward) }}" class="mx-1" title="{{ trans('messages.actions.delete') }}" data-toggle="tooltip" data-confirm="delete"><i class="fas fa-trash"></i></a>
+                                <a href="{{ route('vote.admin.rewards.edit', $reward) }}" class="mx-1" title="{{ trans('messages.actions.edit') }}" data-toggle="tooltip"><i class="bi bi-pencil-square"></i></a>
+                                <a href="{{ route('vote.admin.rewards.destroy', $reward) }}" class="mx-1" title="{{ trans('messages.actions.delete') }}" data-toggle="tooltip" data-confirm="delete"><i class="bi bi-trash"></i></a>
                             </td>
                         </tr>
                     @endforeach
@@ -42,7 +40,7 @@
             </div>
 
             <a class="btn btn-primary" href="{{ route('vote.admin.rewards.create') }}">
-                <i class="fas fa-plus"></i> {{ trans('messages.actions.add') }}
+                <i class="bi bi-plus-lg"></i> {{ trans('messages.actions.add') }}
             </a>
         </div>
     </div>

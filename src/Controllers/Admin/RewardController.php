@@ -17,7 +17,7 @@ class RewardController extends Controller
     public function index()
     {
         return view('vote::admin.rewards.index', [
-            'rewards' => Reward::with('server')->get(),
+            'rewards' => Reward::all(),
         ]);
     }
 
@@ -41,10 +41,12 @@ class RewardController extends Controller
      */
     public function store(RewardRequest $request)
     {
-        Reward::create($request->validated());
+        $reward = Reward::create($request->validated());
+
+        $reward->servers()->sync($request->input('servers', []));
 
         return redirect()->route('vote.admin.rewards.index')
-            ->with('success', trans('vote::admin.rewards.status.created'));
+            ->with('success', trans('messages.status.success'));
     }
 
     /**
@@ -56,7 +58,7 @@ class RewardController extends Controller
     public function edit(Reward $reward)
     {
         return view('vote::admin.rewards.edit', [
-            'reward' => $reward->load('server'),
+            'reward' => $reward->load('servers'),
             'servers' => Server::executable()->get(),
         ]);
     }
@@ -72,8 +74,10 @@ class RewardController extends Controller
     {
         $reward->update($request->validated());
 
+        $reward->servers()->sync($request->input('servers', []));
+
         return redirect()->route('vote.admin.rewards.index')
-            ->with('success', trans('vote::admin.rewards.status.updated'));
+            ->with('success', trans('messages.status.success'));
     }
 
     /**
@@ -89,6 +93,6 @@ class RewardController extends Controller
         $reward->delete();
 
         return redirect()->route('vote.admin.rewards.index')
-            ->with('success', trans('vote::admin.rewards.status.deleted'));
+            ->with('success', trans('messages.status.success'));
     }
 }

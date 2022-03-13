@@ -5,7 +5,6 @@ namespace Azuriom\Plugin\Vote\Requests;
 use Azuriom\Http\Requests\Traits\ConvertCheckbox;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
-use Illuminate\Validation\Rule;
 
 class RewardRequest extends FormRequest
 {
@@ -29,7 +28,7 @@ class RewardRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:50'],
-            'server_id' => ['required', Rule::exists('servers', 'id')],
+            'servers.*' => ['required', 'exists:servers,id'],
             'chances' => ['required', 'numeric', 'between:1,100'],
             'money' => ['nullable', 'numeric', 'min:0'],
             'need_online' => ['filled', 'boolean'],
@@ -41,9 +40,11 @@ class RewardRequest extends FormRequest
     /**
      * Get the validated data from the request.
      *
+     * @param  mixed|null  $key
+     * @param  mixed|null  $default
      * @return array
      */
-    public function validated()
+    public function validated($key = null, $default = null)
     {
         $validated = parent::validated();
 
