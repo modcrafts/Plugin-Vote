@@ -33,6 +33,8 @@
                     <label class="form-label">{{ trans('vote::admin.settings.commands') }}</label>
 
                     @include('admin.elements.list-input', ['name' => 'commands', 'values' => $commands])
+
+                    <small class="form-text">@lang('vote::admin.rewards.commands')</small>
                 </div>
 
                 <button type="submit" class="btn btn-primary">

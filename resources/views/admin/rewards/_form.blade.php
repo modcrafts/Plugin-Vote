@@ -16,7 +16,7 @@
 
     <select class="form-select @error('servers') is-invalid @enderror" id="serversSelect" name="servers[]" multiple>
         @foreach($servers as $server)
-            <option value="{{ $server->id }}" @selected(isset($reward) && $reward->servers->contains($server) ?? false)>
+            <option value="{{ $server->id }}" @selected(isset($reward) && $reward->servers->contains($server))>
                 {{ $server->name }}
             </option>
         @endforeach
@@ -61,7 +61,9 @@
 <div class="mb-3">
     <label class="form-label">{{ trans('vote::messages.fields.commands') }}</label>
 
-    @include('admin.elements.list-input', ['name' => 'commands', 'values' => $commands ?? []])
+    @include('admin.elements.list-input', ['name' => 'commands', 'values' => $reward->commands ?? []])
+
+    <small class="form-text">@lang('vote::admin.rewards.commands')</small>
 </div>
 
 <div class="mb-3 form-check form-switch">
