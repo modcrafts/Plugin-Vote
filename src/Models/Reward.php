@@ -91,7 +91,7 @@ class Reward extends Model
         }, $commands);
 
         foreach ($this->servers as $server) {
-            $server->bridge()->executeCommands($commands, $user->name, $this->need_online);
+            $server->bridge()->sendCommands($commands, $user, $this->need_online);
         }
     }
 
