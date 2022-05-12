@@ -94,6 +94,11 @@ class VoteChecker
             ->retrieveKeyByRegex('/^topserveursminecraft\.com\/[\w\d]+\.(\d+)/')
             ->verifyByJson('voted', 1));
 
+        $this->register(VoteVerifier::for('topserv.fr')
+            ->setApiUrl('https://topserv.fr/api/vote/check-ip?ip={ip}&serverId={server}')
+            ->retrieveKeyByRegex('/^topserv\.fr\/[\w-]+\/server\/(\d+)/')
+            ->verifyByJson('hasVoted', true));
+
         $this->register(VoteVerifier::for('liste-serveur.fr')
             ->setApiUrl('https://www.liste-serveur.fr/api/hasVoted/{server}/{ip}')
             ->requireKey('secret')
