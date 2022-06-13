@@ -99,6 +99,11 @@ class VoteChecker
             ->retrieveKeyByRegex('/^topserv\.fr\/[\w-]+\/server\/(\d+)/')
             ->verifyByJson('hasVoted', true));
 
+        $this->register(VoteVerifier::for('yserveur.fr')
+            ->setApiUrl('https://yserveur.fr/api/vote/json/{server}/{ip}')
+            ->retrieveKeyByRegex('/^yserveur\.fr\/serveur\/(\d+)/')
+            ->verifyByJson('vote', true));
+
         $this->register(VoteVerifier::for('liste-serveur.fr')
             ->setApiUrl('https://www.liste-serveur.fr/api/hasVoted/{server}/{ip}')
             ->requireKey('secret')
