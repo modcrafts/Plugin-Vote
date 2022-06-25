@@ -58,7 +58,12 @@ function initVote() {
             }, 1000);
         }
 
-        el.addEventListener('click', function (ev) {
+        const clickListener = function (ev) {
+            const middleClickCode = 1;
+            if (ev.type === 'auxclick' && ev.button !== middleClickCode) {
+                return;
+            }
+
             if ((voteTime && voteTime > Date.now()) || el.classList.contains('disabled')) {
                 ev.preventDefault();
                 return;
@@ -68,7 +73,10 @@ function initVote() {
             document.getElementById('vote-card').classList.add('voting');
 
             refreshVote(el.dataset['voteUrl']);
-        });
+        };
+
+        el.addEventListener('click', clickListener);
+        el.addEventListener('auxclick', clickListener);
     });
 }
 
