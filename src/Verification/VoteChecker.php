@@ -23,7 +23,7 @@ class VoteChecker
     {
         $this->register(VoteVerifier::for('serveur-minecraft-vote.fr')
             ->setApiUrl('https://serveur-minecraft-vote.fr/api/v1/servers/{server}/vote/{ip}')
-            ->retrieveKeyByRegex('/^serveur-minecraft-vote\.fr\/serveurs\/[\w\d-]+\.(\d+).*/')
+            ->retrieveKeyByRegex('/^serveur-minecraft-vote\.fr\/serveurs\/[\w-]+\.(\d+).*/')
             ->verifyByJson('canVote', false));
 
         $this->register(VoteVerifier::for('liste-serv-minecraft.fr')
@@ -48,7 +48,7 @@ class VoteChecker
 
         $this->register(VoteVerifier::for('serveur-minecraft.fr')
             ->setApiUrl('https://serveur-minecraft.fr/api-{server}_{ip}.json')
-            ->retrieveKeyByRegex('/^serveur-minecraft\.fr\/[\w\d-]+\.(\d+)/')
+            ->retrieveKeyByRegex('/^serveur-minecraft\.fr\/[\w-]+\.(\d+)/')
             ->verifyByJson('status', 'Success'));
 
         $this->register(VoteVerifier::for('serveursminecraft.org')
@@ -71,17 +71,17 @@ class VoteChecker
 
         $this->register(VoteVerifier::for('serveur-multigames.net')
             ->setApiUrl('https://serveur-multigames.net/api/{server}?ip={ip}')
-            ->retrieveKeyByRegex('/^serveur-multigames\.net\/\w+\/([\w\d-]+)/')
+            ->retrieveKeyByRegex('/^serveur-multigames\.net\/\w+\/([\w-]+)/')
             ->verifyByValue('true'));
 
         $this->register(VoteVerifier::for('liste-serveurs.fr')
             ->setApiUrl('https://www.liste-serveurs.fr/api/checkVote/{server}/{ip}')
-            ->retrieveKeyByRegex('/^liste-serveurs\.fr\/[\w\d-]+\.(\d+)/')
+            ->retrieveKeyByRegex('/^liste-serveurs\.fr\/[\w-]+\.(\d+)/')
             ->verifyByJson('success', true));
 
         $this->register(VoteVerifier::for('serveur-top.fr')
             ->setApiUrl('https://serveur-top.fr/api/checkVote/{server}/{ip}')
-            ->retrieveKeyByRegex('/^serveur-top\.fr\/[\w\d-]+\.(\d+)/')
+            ->retrieveKeyByRegex('/^serveur-top\.fr\/[\w-]+\.(\d+)/')
             ->verifyByJson('success', true));
 
         $this->register(VoteVerifier::for('liste-minecraft-serveurs.com')
@@ -91,7 +91,7 @@ class VoteChecker
 
         $this->register(VoteVerifier::for('topserveursminecraft.com')
             ->setApiUrl('https://topserveursminecraft.com/api/server={server}&ip={ip}')
-            ->retrieveKeyByRegex('/^topserveursminecraft\.com\/[\w\d]+\.(\d+)/')
+            ->retrieveKeyByRegex('/^topserveursminecraft\.com\/[\w]+\.(\d+)/')
             ->verifyByJson('voted', 1));
 
         $this->register(VoteVerifier::for('topserv.fr')
@@ -165,7 +165,7 @@ class VoteChecker
             ->verifyByValue('1'));
 
         $this->register(VoteVerifier::for('gtop100.com')
-            ->retrieveKeyByRegex('/^gtop100\.com\/topsites\/[\w\d-]+\/sitedetails\/[\w\d-]+\-(\d+)/')
+            ->retrieveKeyByRegex('/^gtop100\.com\/topsites\/[\w-]+\/sitedetails\/[\w-]+\-(\d+)/')
             ->verifyByPingback(function (Request $request) {
                 abort_if(! in_array($request->ip(), ['198.148.82.98', '198.148.82.99'], true), 403);
 

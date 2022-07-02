@@ -49,6 +49,7 @@ function updateVoteLink(link) {
 function initVote() {
     document.querySelectorAll('[data-vote-url]').forEach(function (el) {
         const voteTime = el.dataset['voteTime'];
+        const url = el.getAttribute('href');
 
         if (voteTime && voteTime > Date.now()) {
             el.classList.add('disabled');
@@ -56,6 +57,10 @@ function initVote() {
             setInterval(function () {
                 updateVoteLink(el)
             }, 1000);
+        }
+
+        if (url.includes('{player}')){
+            el.setAttribute('href', url.replace('{player}', window.username));
         }
 
         const clickListener = function (ev) {
