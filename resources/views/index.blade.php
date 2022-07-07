@@ -16,7 +16,7 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="mb-3">
                             <input type="text" id="stepNameInput" name="name" class="form-control"
-                                   @auth value="{{ auth()->user()->name }}" @endauth
+                                   value="{{ $request->input('user') }}"
                                    placeholder="{{ trans('messages.fields.name') }}" required>
                         </div>
 
@@ -117,7 +117,7 @@
     <script src="{{ plugin_asset('vote', 'js/vote.js') }}" defer></script>
     @auth
         <script>
-            window.username  = '{{ auth()->user()->name }}';
+            window.username  = '{{ $user->name }}';
         </script>
     @endauth
 @endpush
