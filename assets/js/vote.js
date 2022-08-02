@@ -46,6 +46,8 @@ function updateVoteLink(link) {
     }
 }
 
+const voteDoneCallbacks = [];
+
 function initVote() {
     document.querySelectorAll('[data-vote-url]').forEach(function (el) {
         const voteTime = el.dataset['voteTime'];
@@ -53,13 +55,18 @@ function initVote() {
 
         if (voteTime && voteTime > Date.now()) {
             el.classList.add('disabled');
+            updateVoteLink(el);
 
-            setInterval(function () {
-                updateVoteLink(el)
+            const timer = setInterval(function () {
+                updateVoteLink(el);
             }, 1000);
+
+            voteDoneCallbacks.push(function () {
+                clearInterval(timer);
+            })
         }
 
-        if (url.includes('{player}')){
+        if (url.includes('{player}')) {
             el.setAttribute('href', url.replace('{player}', window.username));
         }
 
@@ -82,7 +89,51 @@ function initVote() {
 
         el.addEventListener('click', clickListener);
         el.addEventListener('auxclick', clickListener);
+
+        voteDoneCallbacks.push(function () {
+            el.removeEventListener('click', clickListener);
+            el.removeEventListener('auxclick', clickListener);
+        })
     });
+}
+
+function setupVoteTimers(name) {
+    const loaderIcon = voteNameForm.querySelector('.load-spinner');
+
+    if (loaderIcon) {
+        loaderIcon.classList.remove('d-none');
+    }
+
+    clearVoteAlert();
+
+    axios.get(voteNameForm.action + '/' + name)
+        .then(function (response) {
+            toggleStep(2);
+
+            const sites = response.data.sites;
+            window.username = name;
+
+            for (let id in sites) {
+                const el = document.querySelector('[data-vote-id="' + id + '"]');
+
+                if (el && sites[id]) {
+                    el.classList.remove('disabled');
+                    el.setAttribute('data-vote-time', sites[id]);
+                }
+            }
+
+            initVote();
+        })
+        .catch(function (error) {
+            console.log(error);
+
+            displayVoteAlert(error.response.data.message, 'danger');
+        })
+        .finally(function () {
+            if (loaderIcon) {
+                loaderIcon.classList.add('d-none');
+            }
+        });
 }
 
 const voteNameForm = document.getElementById('voteNameForm');
@@ -92,41 +143,8 @@ if (voteNameForm) {
         ev.preventDefault();
 
         let tempUsername = document.getElementById('stepNameInput').value;
-        const loaderIcon = voteNameForm.querySelector('.load-spinner');
 
-        if (loaderIcon) {
-            loaderIcon.classList.remove('d-none');
-        }
-
-        clearVoteAlert();
-
-        axios.get(voteNameForm.action + '/' + tempUsername)
-            .then(function (response) {
-                toggleStep(2);
-
-                const sites = response.data.sites;
-                window.username = tempUsername;
-
-                for (let id in sites) {
-                    const el = document.querySelector('[data-vote-id="' + id + '"]');
-
-                    if (el && sites[id]) {
-                        el.setAttribute('data-vote-time', sites[id]);
-                    }
-                }
-
-                initVote();
-            })
-            .catch(function (error) {
-                console.log(error);
-
-                displayVoteAlert(error.response.data.message, 'danger');
-            })
-            .finally(function () {
-                if (loaderIcon) {
-                    loaderIcon.classList.add('d-none');
-                }
-            });
+        setupVoteTimers(tempUsername);
     });
 }
 
@@ -143,6 +161,12 @@ function refreshVote(url) {
             displayVoteAlert(response.data.message, 'success');
 
             document.getElementById('vote-card').classList.remove('voting');
+
+            voteDoneCallbacks.forEach(function (callback) {
+                callback();
+            });
+
+            setupVoteTimers(window.username);
         }).catch(function (error) {
             document.getElementById('vote-card').classList.remove('voting');
 
