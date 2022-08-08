@@ -7,8 +7,6 @@ function toggleStep(step) {
     if (current) {
         current.classList.remove('d-none');
     }
-
-    clearVoteAlert();
 }
 
 function clearVoteAlert() {
@@ -81,6 +79,8 @@ function initVote() {
                 return;
             }
 
+            clearVoteAlert();
+
             el.classList.add('disabled');
             document.getElementById('vote-card').classList.add('voting');
 
@@ -103,8 +103,6 @@ function setupVoteTimers(name) {
     if (loaderIcon) {
         loaderIcon.classList.remove('d-none');
     }
-
-    clearVoteAlert();
 
     axios.get(voteNameForm.action + '/' + name)
         .then(function (response) {
@@ -143,6 +141,8 @@ if (voteNameForm) {
         ev.preventDefault();
 
         let tempUsername = document.getElementById('stepNameInput').value;
+
+        clearVoteAlert();
 
         setupVoteTimers(tempUsername);
     });
