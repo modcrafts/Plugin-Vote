@@ -23,5 +23,5 @@ return [
         'delay' => 'You already voted, you can vote again in :time !',
     ],
 
-    'success' => 'Your vote has been taken into account, you will receive your rewards soon!',
+    'success' => 'Your vote has been taken into account, you will soon receive the reward « :reward »!',
 ];

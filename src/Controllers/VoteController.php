@@ -106,7 +106,11 @@ class VoteController extends Controller
             $reward->giveTo($user);
         }
 
-        return response()->json(['message' => trans('vote::messages.success')]);
+        return response()->json([
+            'message' => trans('vote::messages.success', [
+                'reward' => $reward->name,
+            ]),
+        ]);
     }
 
     private function formatTimeMessage(Carbon $nextVoteTime)
