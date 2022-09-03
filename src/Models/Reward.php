@@ -3,6 +3,7 @@
 namespace Azuriom\Plugin\Vote\Models;
 
 use Azuriom\Models\Server;
+use Azuriom\Models\Traits\HasImage;
 use Azuriom\Models\Traits\HasTablePrefix;
 use Azuriom\Models\Traits\Loggable;
 use Azuriom\Models\User;
@@ -12,7 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int $id
  * @property string $name
- * @property int $chances
+ * @property string $image
+ * @property float $chances
  * @property int|null $money
  * @property bool $need_online
  * @property array $commands
@@ -26,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Reward extends Model
 {
+    use HasImage;
     use HasTablePrefix;
     use Loggable;
 
@@ -42,7 +45,7 @@ class Reward extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'chances', 'money', 'commands', 'need_online', 'is_enabled',
+        'name', 'image', 'chances', 'money', 'commands', 'need_online', 'is_enabled',
     ];
 
     /**

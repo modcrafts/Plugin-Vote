@@ -11,6 +11,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">{{ trans('messages.fields.name') }}</th>
+                        <th scope="col">{{ trans('messages.fields.image') }}</th>
                         <th scope="col">{{ trans('vote::messages.fields.chances') }}</th>
                         <th scope="col">{{ trans('messages.fields.enabled') }}</th>
                         <th scope="col">{{ trans('messages.fields.action') }}</th>
@@ -22,6 +23,13 @@
                         <tr>
                             <th scope="row">{{ $reward->id }}</th>
                             <td>{{ $reward->name }}</td>
+                            <td>
+                                @if($reward->image)
+                                    <img src="{{ $reward->imageUrl() }}" class="img-small rounded" alt="{{ $reward->name }}">
+                                @else
+                                    {{ trans('messages.none') }}
+                                @endif
+                            </td>
                             <td>{{ $reward->chances }} %</td>
                             <td>
                                 <span class="badge bg-{{ $reward->is_enabled ? 'success' : 'danger' }}">

@@ -45,6 +45,10 @@ class RewardController extends Controller
 
         $reward->servers()->sync($request->input('servers', []));
 
+        if ($request->hasFile('image')) {
+            $reward->storeImage($request->file('image'), true);
+        }
+
         return redirect()->route('vote.admin.rewards.index')
             ->with('success', trans('messages.status.success'));
     }
@@ -75,6 +79,10 @@ class RewardController extends Controller
         $reward->update($request->validated());
 
         $reward->servers()->sync($request->input('servers', []));
+
+        if ($request->hasFile('image')) {
+            $reward->storeImage($request->file('image'), true);
+        }
 
         return redirect()->route('vote.admin.rewards.index')
             ->with('success', trans('messages.status.success'));
