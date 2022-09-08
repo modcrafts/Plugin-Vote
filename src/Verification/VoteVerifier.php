@@ -151,7 +151,7 @@ class VoteVerifier
     
     public function verifyByFunction(Closure $function)
     {
-        $this->verificationMethod = $function(Response $response);
+        $this->verificationMethod = $function;
 
         return $this;
     }
