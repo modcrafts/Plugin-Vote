@@ -148,7 +148,14 @@ class VoteVerifier
 
         return $this;
     }
+    
+    public function verifyByFunction(Closure $function)
+    {
+        $this->verificationMethod = $function(Response $response);
 
+        return $this;
+    }
+    
     public function executePingbackCallback(Request $request)
     {
         return ($this->pingbackCallback)($request);
